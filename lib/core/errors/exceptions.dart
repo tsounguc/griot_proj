@@ -51,3 +51,47 @@ class SpeakResponseException extends VoiceResponderException {
     required super.statusCode,
   });
 }
+
+/// **Base class for all understanding responder exceptions.**
+abstract class UnderstandingException extends Equatable implements Exception {
+  const UnderstandingException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final String statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
+/// **Exception thrown when analyzing user input.**
+class AnalyzeException extends UnderstandingException {
+  const AnalyzeException({
+    required super.message,
+    required super.statusCode,
+  });
+}
+
+/// **Base class for all reflect exceptions.**
+abstract class ReflectException extends Equatable implements Exception {
+  const ReflectException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final String statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
+/// **Exception thrown when getting GPT reflect response.**
+class GetResponseException extends ReflectException {
+  const GetResponseException({
+    required super.message,
+    required super.statusCode,
+  });
+}

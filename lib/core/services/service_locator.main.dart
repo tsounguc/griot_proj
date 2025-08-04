@@ -22,24 +22,17 @@ Future<void> _initUserInput() async {
     ..registerLazySingleton(() => SpeakResponse(serviceLocator()))
     ..registerLazySingleton(() => ListenToSpeech(serviceLocator()))
     // Repositories
-    ..registerLazySingleton<UserInputRepository>(
-      () => UserInputRepositoryImpl(
-        wakeWordListener: serviceLocator(),
-        speechRecognizer: serviceLocator(),
-      ),
+    ..registerLazySingleton<VoiceInputRepository>(
+      () => VoiceInputRepositoryImpl(remoteDataSource: serviceLocator()),
     )
     ..registerLazySingleton<VoiceResponderRepository>(
       () => VoiceResponderRepositoryImpl(serviceLocator()),
     )
     // Data Source
-    ..registerLazySingleton<WakeWordListener>(
-      WakeWordListenerImpl.new,
-    )
-    ..registerLazySingleton<VoiceResponder>(
-      () => VoiceResponderImpl(serviceLocator()),
-    )
-    ..registerLazySingleton<SpeechRecognizer>(
-      () => SpeechRecognizerImpl(serviceLocator()),
+    ..registerLazySingleton<VoiceInputRemoteDataSource>(
+      () => VoiceInputRemoteDataSourceImpl(
+        speechToText: serviceLocator(),
+      ),
     )
     // External dependencies
     ..registerLazySingleton(
@@ -50,4 +43,22 @@ Future<void> _initUserInput() async {
     )
     ..registerLazySingleton(SpeechToText.new)
     ..registerLazySingleton(() => prefs);
+}
+
+Future<void> _initUnderstand() async {
+  final prefs = await SharedPreferences.getInstance();
+  serviceLocator
+    // App Logic
+    // Use cases
+    ..registerLazySingleton(() => AnalyzeInput(serviceLocator()))
+    // Repositories
+    ..registerLazySingleton<UnderstandRepository>(
+      () => UnderstandRepositoryImpl(remoteDataSource: serviceLocator()),
+    )
+    // Data Source
+    ..registerLazySingleton<UnderstandRemoteDataSource>(
+      () => UnderstandRemoteDataSourceImpl(),
+    )
+  // External dependencies
+  ;
 }

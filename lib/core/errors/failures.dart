@@ -88,3 +88,51 @@ class SpeakResponseFailure extends VoiceResponderFailure {
         statusCode: exception.statusCode,
       );
 }
+
+/// **Base class for all understand failures.**
+///
+/// This allows us to have specific failure types.
+abstract class UnderstandFailure extends Failure {
+  UnderstandFailure({
+    required super.message,
+    required super.statusCode,
+  });
+}
+
+class AnalyzeFailure extends UnderstandFailure {
+  AnalyzeFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  /// Converts a [AnalyzeException] into a [AnalyzeFailure].
+  AnalyzeFailure.fromException(AnalyzeException exception)
+    : this(
+        message: exception.message,
+        statusCode: exception.statusCode,
+      );
+}
+
+/// **Base class for all reflect failures.**
+///
+/// This allows us to have specific failure types.
+abstract class ReflectFailure extends Failure {
+  ReflectFailure({
+    required super.message,
+    required super.statusCode,
+  });
+}
+
+class GetResponseFailure extends ReflectFailure {
+  GetResponseFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  /// Converts a [GetResponseException] into a [GetResponseFailure].
+  GetResponseFailure.fromException(GetResponseException exception)
+    : this(
+        message: exception.message,
+        statusCode: exception.statusCode,
+      );
+}

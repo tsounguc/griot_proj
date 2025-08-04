@@ -28,3 +28,8 @@ typedef ResultVoid = ResultFuture<void>;
 /// Useful for working with **Firestore, APIs,
 /// or local storage** where data is stored as key-value pairs.
 typedef DataMap = Map<String, dynamic>;
+
+/// A shorthand type definition for the wake word call back function
+///
+/// This is will improve clarity and avoid potential misuse
+typedef WakeWordCallback = void Function();
