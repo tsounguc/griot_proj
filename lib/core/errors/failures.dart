@@ -160,3 +160,17 @@ class SelectRoleFailure extends ModelContextFailure {
         statusCode: exception.statusCode,
       );
 }
+
+class BuildPromptFailure extends ModelContextFailure {
+  BuildPromptFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  /// Converts a [BuildPromptException] into a [BuildPromptFailure].
+  BuildPromptFailure.fromException(SelectRoleException exception)
+    : this(
+        message: exception.message,
+        statusCode: exception.statusCode,
+      );
+}

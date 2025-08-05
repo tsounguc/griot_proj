@@ -117,3 +117,11 @@ class SelectRoleException extends ModelContextException {
     required super.statusCode,
   });
 }
+
+/// **Exception thrown when building prompts.**
+class BuildPromptException extends ModelContextException {
+  const BuildPromptException({
+    required super.message,
+    required super.statusCode,
+  });
+}

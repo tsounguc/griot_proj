@@ -1,9 +1,15 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
+import 'package:griot_proj/features/core_loop/input_router.dart';
 import 'package:griot_proj/features/model_context/data/data_sources/role_selector.dart';
 import 'package:griot_proj/features/model_context/data/repositories/role_selector_repository_impl.dart';
 import 'package:griot_proj/features/model_context/domain/repositories/role_selector_repository.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/build_prompt.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/select_role.dart';
+import 'package:griot_proj/features/reflect/data/data_sources/reflect_remote_data_source.dart';
+import 'package:griot_proj/features/reflect/data/repositories/reflect_repository_impl.dart';
+import 'package:griot_proj/features/reflect/domain/repositories/reflect_repository.dart';
+import 'package:griot_proj/features/reflect/domain/use_cases/get_gpt_response.dart';
 import 'package:griot_proj/features/understand/data/data_sources/understand_remote_data_source.dart';
 import 'package:griot_proj/features/understand/data/repositories/understand_repository_impl.dart';
 import 'package:griot_proj/features/understand/domain/repositories/understand_repository.dart';
@@ -14,6 +20,7 @@ import 'package:griot_proj/features/user_input/domain/repositories/voice_input_r
 import 'package:griot_proj/features/user_input/domain/use_cases/listen_for_wake_word.dart';
 import 'package:griot_proj/features/user_input/domain/use_cases/listen_to_speech.dart';
 import 'package:griot_proj/features/user_input/presentation/cubit/user_input_cubit.dart';
+import 'package:griot_proj/features/voice_interface/data/datasource/voice_responder.dart';
 import 'package:griot_proj/features/voice_interface/data/respositories/voice_responder_repository_impl.dart';
 import 'package:griot_proj/features/voice_interface/domain/repostories/voice_responder_repository.dart';
 import 'package:griot_proj/features/voice_interface/domain/use_cases/speak_response.dart';

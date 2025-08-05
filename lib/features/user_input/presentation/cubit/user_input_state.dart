@@ -29,6 +29,22 @@ class UserVoiceInputCaptured extends UserInputState {
   List<Object> get props => [text];
 }
 
+class UserVoiceInputAnalyzed extends UserInputState {
+  const UserVoiceInputAnalyzed(this.result);
+  final AnalyzedResult result;
+
+  @override
+  List<Object> get props => [result];
+}
+
+class GRIOTResponseReceived extends UserInputState {
+  const GRIOTResponseReceived(this.text);
+  final String text;
+
+  @override
+  List<Object> get props => [text];
+}
+
 class UserInputError extends UserInputState {
   const UserInputError(this.message);
   final String message;

@@ -16,6 +16,15 @@ class HomeScreen extends StatelessWidget {
             if (state is WaitingForUserInput) {
               context.read<WakeWordCubit>().listenToUserSpeech();
             }
+            if (state is UserVoiceInputCaptured) {
+              context.read<WakeWordCubit>().analyzeVoiceInput(state.text);
+            }
+            if (state is UserVoiceInputAnalyzed) {
+              context.read<WakeWordCubit>().getResponse(state.result);
+            }
+            if (state is GRIOTResponseReceived) {
+              context.read<WakeWordCubit>().respondVocally(state.text);
+            }
           },
           builder: (context, state) {
             print(state);

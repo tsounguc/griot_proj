@@ -3,9 +3,12 @@ part of 'service_locator.dart';
 final GetIt serviceLocator = GetIt.instance;
 
 Future<void> setUpServices() async {
-  await _initUserInput();
-  await _initUnderstand();
+  await _initReflect();
+  await _initVoiceResponder();
+  await _initInputRouter();
   await _initModelContext();
+  await _initUnderstand();
+  await _initUserInput();
 }
 
 Future<void> _initUserInput() async {
@@ -17,18 +20,16 @@ Future<void> _initUserInput() async {
         listenForWakeWord: serviceLocator(),
         speakResponse: serviceLocator(),
         listenToSpeech: serviceLocator(),
+        analyzeInput: serviceLocator(),
+        inputRouter: serviceLocator(),
       ),
     )
     // Use cases
     ..registerLazySingleton(() => ListenForWakeWord(serviceLocator()))
-    ..registerLazySingleton(() => SpeakResponse(serviceLocator()))
     ..registerLazySingleton(() => ListenToSpeech(serviceLocator()))
     // Repositories
     ..registerLazySingleton<VoiceInputRepository>(
       () => VoiceInputRepositoryImpl(remoteDataSource: serviceLocator()),
-    )
-    ..registerLazySingleton<VoiceResponderRepository>(
-      () => VoiceResponderRepositoryImpl(serviceLocator()),
     )
     // Data Source
     ..registerLazySingleton<VoiceInputRemoteDataSource>(
@@ -69,6 +70,7 @@ Future<void> _initModelContext() async {
     // App Logic
     // Use cases
     ..registerLazySingleton(() => SelectRole(serviceLocator()))
+    ..registerLazySingleton(BuildPrompt.new)
     // Repositories
     ..registerLazySingleton<RoleSelectorRepository>(
       () => RoleSelectorRepositoryImpl(serviceLocator()),
@@ -77,6 +79,53 @@ Future<void> _initModelContext() async {
     ..registerLazySingleton<RoleSelector>(
       RoleSelectorImpl.new,
     )
+  // External dependencies
+  ;
+}
+
+Future<void> _initInputRouter() async {
+  serviceLocator
+    // App Logic
+    // Use cases
+    ..registerLazySingleton(
+      () => InputRouter(
+        selectRole: serviceLocator(),
+        buildPrompt: serviceLocator(),
+        getGPTResponse: serviceLocator(),
+      ),
+    )
+  // Repositories
+  // Data Source
+  // External dependencies
+  ;
+}
+
+Future<void> _initVoiceResponder() async {
+  serviceLocator
+    // App Logic
+    // Use cases
+    ..registerLazySingleton(() => SpeakResponse(serviceLocator()))
+    // Repositories
+    ..registerLazySingleton<VoiceResponderRepository>(
+      () => VoiceResponderRepositoryImpl(serviceLocator()),
+    )
+    // Data Source
+    ..registerLazySingleton<VoiceResponder>(() => VoiceResponderImpl(serviceLocator()))
+  // External dependencies
+  ;
+}
+
+Future<void> _initReflect() async {
+  serviceLocator
+    // App Logic
+    // Use cases
+    ..registerLazySingleton(() => GetGPTResponse(serviceLocator()))
+    // Repositories
+    ..registerLazySingleton<ReflectRepository>(
+      () => ReflectRepositoryImpl(serviceLocator()),
+    )
+    // Data Source
+    ..registerLazySingleton<ReflectRemoteDataSource>(ReflectRemoteDataSourceImpl.new)
   // External dependencies
   ;
 }

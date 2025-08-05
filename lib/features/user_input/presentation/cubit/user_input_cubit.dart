@@ -1,5 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:griot_proj/features/core_loop/input_router.dart';
+import 'package:griot_proj/features/understand/domain/entities/analyzed_result.dart';
+import 'package:griot_proj/features/understand/domain/use_cases/analyze_input.dart';
 import 'package:griot_proj/features/user_input/domain/use_cases/listen_for_wake_word.dart';
 import 'package:griot_proj/features/user_input/domain/use_cases/listen_to_speech.dart';
 import 'package:griot_proj/features/voice_interface/domain/use_cases/speak_response.dart';
@@ -11,14 +14,20 @@ class WakeWordCubit extends Cubit<UserInputState> {
     required ListenForWakeWord listenForWakeWord,
     required SpeakResponse speakResponse,
     required ListenToSpeech listenToSpeech,
+    required AnalyzeInput analyzeInput,
+    required InputRouter inputRouter,
   }) : _listenForWakeWord = listenForWakeWord,
        _speakResponse = speakResponse,
        _listenToUserSpeech = listenToSpeech,
+       _analyzeInput = analyzeInput,
+       _inputRouter = inputRouter,
        super(WakeWordInitial());
 
   final ListenForWakeWord _listenForWakeWord;
   final SpeakResponse _speakResponse;
   final ListenToSpeech _listenToUserSpeech;
+  final AnalyzeInput _analyzeInput;
+  final InputRouter _inputRouter;
 
   Future<void> listenForWakeWord() async {
     emit(const WakeWordListening());
@@ -44,6 +53,33 @@ class WakeWordCubit extends Cubit<UserInputState> {
           emit(UserVoiceInputCaptured(input));
         }
       },
+    );
+  }
+
+  Future<void> analyzeVoiceInput(String input) async {
+    final result = await _analyzeInput(input);
+    result.fold(
+      (failure) => emit(UserInputError(failure.message)),
+      (analyzedResult) => emit(
+        UserVoiceInputAnalyzed(analyzedResult),
+      ),
+    );
+  }
+
+  Future<void> getResponse(AnalyzedResult analyzedResult) async {
+    final result = await _inputRouter.route(analyzedResult);
+    result.fold(
+      (failure) => emit(UserInputError(failure.message)),
+      (response) => emit(GRIOTResponseReceived(response)),
+    );
+  }
+
+  Future<void> respondVocally(String text) async {
+    final result = await _speakResponse.call(text);
+
+    result.fold(
+      (failure) => emit(UserInputError(failure.message)),
+      (_) => null,
     );
   }
 
