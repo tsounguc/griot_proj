@@ -95,3 +95,25 @@ class GetResponseException extends ReflectException {
     required super.statusCode,
   });
 }
+
+/// **Base class for all model context exceptions.**
+abstract class ModelContextException extends Equatable implements Exception {
+  const ModelContextException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final String statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
+/// **Exception thrown when selecting GRIOT's role.**
+class SelectRoleException extends ModelContextException {
+  const SelectRoleException({
+    required super.message,
+    required super.statusCode,
+  });
+}

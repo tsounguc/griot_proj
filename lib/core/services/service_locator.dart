@@ -1,5 +1,9 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
+import 'package:griot_proj/features/model_context/data/data_sources/role_selector.dart';
+import 'package:griot_proj/features/model_context/data/repositories/role_selector_repository_impl.dart';
+import 'package:griot_proj/features/model_context/domain/repositories/role_selector_repository.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/select_role.dart';
 import 'package:griot_proj/features/understand/data/data_sources/understand_remote_data_source.dart';
 import 'package:griot_proj/features/understand/data/repositories/understand_repository_impl.dart';
 import 'package:griot_proj/features/understand/domain/repositories/understand_repository.dart';

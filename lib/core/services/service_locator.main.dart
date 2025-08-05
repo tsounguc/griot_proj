@@ -4,6 +4,8 @@ final GetIt serviceLocator = GetIt.instance;
 
 Future<void> setUpServices() async {
   await _initUserInput();
+  await _initUnderstand();
+  await _initModelContext();
 }
 
 Future<void> _initUserInput() async {
@@ -46,7 +48,6 @@ Future<void> _initUserInput() async {
 }
 
 Future<void> _initUnderstand() async {
-  final prefs = await SharedPreferences.getInstance();
   serviceLocator
     // App Logic
     // Use cases
@@ -57,7 +58,24 @@ Future<void> _initUnderstand() async {
     )
     // Data Source
     ..registerLazySingleton<UnderstandRemoteDataSource>(
-      () => UnderstandRemoteDataSourceImpl(),
+      UnderstandRemoteDataSourceImpl.new,
+    )
+  // External dependencies
+  ;
+}
+
+Future<void> _initModelContext() async {
+  serviceLocator
+    // App Logic
+    // Use cases
+    ..registerLazySingleton(() => SelectRole(serviceLocator()))
+    // Repositories
+    ..registerLazySingleton<RoleSelectorRepository>(
+      () => RoleSelectorRepositoryImpl(serviceLocator()),
+    )
+    // Data Source
+    ..registerLazySingleton<RoleSelector>(
+      RoleSelectorImpl.new,
     )
   // External dependencies
   ;

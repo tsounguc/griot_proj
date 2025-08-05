@@ -136,3 +136,27 @@ class GetResponseFailure extends ReflectFailure {
         statusCode: exception.statusCode,
       );
 }
+
+/// **Base class for all model context failures.**
+///
+/// This allows us to have specific failure types.
+abstract class ModelContextFailure extends Failure {
+  ModelContextFailure({
+    required super.message,
+    required super.statusCode,
+  });
+}
+
+class SelectRoleFailure extends ModelContextFailure {
+  SelectRoleFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  /// Converts a [SelectRoleException] into a [SelectRoleFailure].
+  SelectRoleFailure.fromException(SelectRoleException exception)
+    : this(
+        message: exception.message,
+        statusCode: exception.statusCode,
+      );
+}
