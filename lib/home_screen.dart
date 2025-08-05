@@ -9,7 +9,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Wake Word Listener')),
+      appBar: AppBar(
+        title: const Text('GRIOT'),
+        centerTitle: true,
+      ),
       body: Center(
         child: BlocConsumer<WakeWordCubit, UserInputState>(
           listener: (context, state) {
