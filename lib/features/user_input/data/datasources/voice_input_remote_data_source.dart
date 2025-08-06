@@ -65,15 +65,23 @@ class VoiceInputRemoteDataSourceImpl implements VoiceInputRemoteDataSource {
       if (!available) return null;
 
       var recognizedText = '';
+      bool resultFinal = false;
       await speechToText.listen(
         onResult: (result) {
           recognizedText = result.recognizedWords;
+          resultFinal = result.finalResult;
         },
-        listenFor: const Duration(seconds: 5),
-        pauseFor: const Duration(seconds: 2),
+        listenFor: const Duration(seconds: 20),
+        pauseFor: const Duration(seconds: 4),
         localeId: 'en_US',
+        partialResults: true,
       );
-      await Future<void>.delayed(const Duration(seconds: 6));
+
+      // Wait until recognition completes (user stopped speaking)
+      while (speechToText.isListening && !resultFinal) {
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+      }
+
       await speechToText.stop();
 
       return recognizedText.isNotEmpty ? recognizedText : null;
