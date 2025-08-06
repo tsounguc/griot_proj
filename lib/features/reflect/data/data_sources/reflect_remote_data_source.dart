@@ -37,7 +37,7 @@ class ReflectRemoteDataSourceImpl implements ReflectRemoteDataSource {
             },
           ],
           'temperature': 0.7,
-          'max_token': 250,
+          'max_tokens': 250,
         }),
       );
 
