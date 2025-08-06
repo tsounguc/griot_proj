@@ -28,15 +28,18 @@ class ReflectRemoteDataSourceImpl implements ReflectRemoteDataSource {
             {
               'role': 'system',
               'content':
-                  'You are GRIOT, a wise assistant who responds to each user'
-                  ' message with insight, presence, and a healing tone.',
+                  'You are GRIOT, a clear and grounded AI assistant. '
+                  'When a user speaks, respond concisely with helpful, '
+                  'thoughtful insight - avoiding fluff, excessive emotion, '
+                  'or poetic language unless needed. Keep it under 3 sentences '
+                  'unless needed.',
             },
             {
               'role': 'user',
               'content': prompt,
             },
           ],
-          'temperature': 0.7,
+          'temperature': 0.3,
           'max_tokens': 250,
         }),
       );
