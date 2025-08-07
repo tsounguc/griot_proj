@@ -174,3 +174,17 @@ class BuildPromptFailure extends ModelContextFailure {
         statusCode: exception.statusCode,
       );
 }
+
+class GriotInteractionFailure extends ModelContextFailure {
+  GriotInteractionFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  /// Converts a [GriotInteractionException] into a [GriotInteractionFailure].
+  GriotInteractionFailure.fromException(GriotInteractionException exception)
+    : this(
+        message: exception.message,
+        statusCode: exception.statusCode,
+      );
+}

@@ -10,11 +10,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('GRIOT'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-      ),
+      // appBar: AppBar(
+      //   title: const Text('GRIOT'),
+      //   centerTitle: true,
+      //   backgroundColor: Colors.black,
+      // ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: RadialGradient(

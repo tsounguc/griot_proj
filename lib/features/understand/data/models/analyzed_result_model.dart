@@ -4,7 +4,7 @@ import 'package:griot_proj/core/utils/type_defs.dart';
 import 'package:griot_proj/features/understand/domain/entities/analyzed_result.dart';
 
 class AnalyzedResultModel extends AnalyzedResult {
-  AnalyzedResultModel({
+  const AnalyzedResultModel({
     required super.input,
     required super.intent,
     required super.emotion,

@@ -22,6 +22,8 @@ Future<void> _initUserInput() async {
         listenToSpeech: serviceLocator(),
         analyzeInput: serviceLocator(),
         inputRouter: serviceLocator(),
+        saveInteraction: serviceLocator(),
+        getRecentInteractions: serviceLocator(),
       ),
     )
     // Use cases
@@ -71,13 +73,21 @@ Future<void> _initModelContext() async {
     // Use cases
     ..registerLazySingleton(() => SelectRole(serviceLocator()))
     ..registerLazySingleton(BuildPrompt.new)
+    ..registerLazySingleton(() => SaveContextMemory(serviceLocator()))
+    ..registerLazySingleton(() => GetRecentContextMemory(serviceLocator()))
     // Repositories
     ..registerLazySingleton<RoleSelectorRepository>(
       () => RoleSelectorRepositoryImpl(serviceLocator()),
     )
+    ..registerLazySingleton<ContextMemoryRepository>(
+      () => ContextMemoryRepositoryImpl(serviceLocator()),
+    )
     // Data Source
     ..registerLazySingleton<RoleSelector>(
       RoleSelectorImpl.new,
+    )
+    ..registerLazySingleton<ContextMemoryLocalDataSource>(
+      ContextMemoryLocalDataSourceImpl.new,
     )
   // External dependencies
   ;

@@ -125,3 +125,11 @@ class BuildPromptException extends ModelContextException {
     required super.statusCode,
   });
 }
+
+/// **Exception thrown when saving and retrieving interactions.**
+class GriotInteractionException extends ModelContextException {
+  const GriotInteractionException({
+    required super.message,
+    required super.statusCode,
+  });
+}

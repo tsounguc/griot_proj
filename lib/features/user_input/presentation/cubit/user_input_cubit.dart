@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:griot_proj/features/core_loop/input_router.dart';
+import 'package:griot_proj/features/model_context/domain/entities/griot_interaction.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/get_recent_context_memory.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/save_context_memory.dart';
 import 'package:griot_proj/features/understand/domain/entities/analyzed_result.dart';
 import 'package:griot_proj/features/understand/domain/use_cases/analyze_input.dart';
 import 'package:griot_proj/features/user_input/domain/use_cases/listen_for_wake_word.dart';
@@ -16,11 +19,15 @@ class WakeWordCubit extends Cubit<UserInputState> {
     required ListenToSpeech listenToSpeech,
     required AnalyzeInput analyzeInput,
     required InputRouter inputRouter,
+    required SaveContextMemory saveContextMemory,
+    required GetRecentContextMemory getRecentContextMemory,
   }) : _listenForWakeWord = listenForWakeWord,
        _speakResponse = speakResponse,
        _listenToUserSpeech = listenToSpeech,
        _analyzeInput = analyzeInput,
        _inputRouter = inputRouter,
+       _saveContextMemory = saveContextMemory,
+       _getRecentContextMemory = getRecentContextMemory,
        super(WakeWordInitial());
 
   final ListenForWakeWord _listenForWakeWord;
@@ -28,6 +35,8 @@ class WakeWordCubit extends Cubit<UserInputState> {
   final ListenToSpeech _listenToUserSpeech;
   final AnalyzeInput _analyzeInput;
   final InputRouter _inputRouter;
+  final SaveContextMemory _saveContextMemory;
+  final GetRecentContextMemory _getRecentContextMemory;
 
   Future<void> listenForWakeWord() async {
     emit(const WakeWordListening());
@@ -68,10 +77,16 @@ class WakeWordCubit extends Cubit<UserInputState> {
 
   Future<void> getResponse(AnalyzedResult analyzedResult) async {
     final result = await _inputRouter.route(analyzedResult);
-    result.fold(
-      (failure) => emit(UserInputError(failure.message)),
-      (response) => emit(GRIOTResponseReceived(response)),
-    );
+    result.fold((failure) => emit(UserInputError(failure.message)), (response) async {
+      emit(GRIOTResponseReceived(response));
+      await _saveContextMemory(
+        GriotInteraction(
+          timestamp: DateTime.now(),
+          userInput: analyzedResult.input,
+          griotResponse: response,
+        ),
+      );
+    });
   }
 
   Future<void> respondVocally(String text) async {

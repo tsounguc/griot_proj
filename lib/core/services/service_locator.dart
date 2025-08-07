@@ -1,10 +1,15 @@
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:griot_proj/features/core_loop/input_router.dart';
+import 'package:griot_proj/features/model_context/data/data_sources/context_memory_local_data_source.dart';
 import 'package:griot_proj/features/model_context/data/data_sources/role_selector.dart';
+import 'package:griot_proj/features/model_context/data/repositories/context_memory_repository_impl.dart';
 import 'package:griot_proj/features/model_context/data/repositories/role_selector_repository_impl.dart';
+import 'package:griot_proj/features/model_context/domain/repositories/context_memory_repository.dart';
 import 'package:griot_proj/features/model_context/domain/repositories/role_selector_repository.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/build_prompt.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/get_recent_context_memory.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/save_context_memory.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/select_role.dart';
 import 'package:griot_proj/features/reflect/data/data_sources/reflect_remote_data_source.dart';
 import 'package:griot_proj/features/reflect/data/repositories/reflect_repository_impl.dart';
