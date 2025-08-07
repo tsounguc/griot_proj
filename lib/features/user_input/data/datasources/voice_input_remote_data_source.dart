@@ -39,7 +39,7 @@ class VoiceInputRemoteDataSourceImpl implements VoiceInputRemoteDataSource {
             onWakeWordDetected();
           }
         },
-        sensitivities: [0.65],
+        sensitivities: [0.55],
       );
 
       await _manager.start();
