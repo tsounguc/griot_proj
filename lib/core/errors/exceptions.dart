@@ -133,3 +133,25 @@ class GriotInteractionException extends ModelContextException {
     required super.statusCode,
   });
 }
+
+/// **Base class for all remember exceptions.**
+abstract class RememberException extends Equatable implements Exception {
+  const RememberException({
+    required this.message,
+    required this.statusCode,
+  });
+
+  final String message;
+  final String statusCode;
+
+  @override
+  List<Object?> get props => [message, statusCode];
+}
+
+/// **Exception thrown when saving and retrieving conversation logs.**
+class ConversationLogException extends RememberException {
+  const ConversationLogException({
+    required super.message,
+    required super.statusCode,
+  });
+}

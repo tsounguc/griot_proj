@@ -1,13 +1,40 @@
+import 'package:griot_proj/features/model_context/domain/entities/griot_interaction.dart';
+
 class PromptBuilder {
   const PromptBuilder._();
-  static String buildPrompt(String input, String role) {
+  static String buildPrompt({
+    required String input,
+    required String role,
+    List<GriotInteraction> recent = const [],
+  }) {
+    final history = _formatHistory(recent);
+
     return '''
-    You are GRIOT, a grounded and thoughtful AI assistant.
-    Your current role is: $role.
-    Respond with clarity and presence.
-    Avoid poetic or overly emotional language, unless needed.
-    
+    Role: $role
+    Style: clear, practical, under 2-3 sentences. avoid poetic/overly emotional language.
+    ${history.isEmpty ? '' : 'Recent context (most recent first): \n$history\n'}
     User said: "$input"
+    
+    Guidelines:
+    - If the request is ambiguous, ask one brief clarifying question.
+    - Be helpful and specific; avoid generic platitudes.
     ''';
+  }
+
+  static String _formatHistory(List<GriotInteraction> recent) {
+    if (recent.isEmpty) return '';
+
+    // Most recent first (assume use case already returns latest first;
+    // if not reverse here).
+    final lines = recent
+        .take(3)
+        .map((it) {
+          final user = it.userInput.trim().replaceAll('\n', ' ');
+          final ai = it.griotResponse.trim().replaceAll('\n', ' ');
+          return '- User: "$user"\n GRIOT: "$ai"';
+        })
+        .join('\n');
+
+    return lines;
   }
 }

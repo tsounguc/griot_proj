@@ -22,8 +22,7 @@ Future<void> _initUserInput() async {
         listenToSpeech: serviceLocator(),
         analyzeInput: serviceLocator(),
         inputRouter: serviceLocator(),
-        saveInteraction: serviceLocator(),
-        getRecentInteractions: serviceLocator(),
+        saveContextMemory: serviceLocator(),
       ),
     )
     // Use cases
@@ -102,6 +101,7 @@ Future<void> _initInputRouter() async {
         selectRole: serviceLocator(),
         buildPrompt: serviceLocator(),
         getGPTResponse: serviceLocator(),
+        getRecentContextMemory: serviceLocator(),
       ),
     )
   // Repositories

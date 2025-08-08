@@ -188,3 +188,27 @@ class GriotInteractionFailure extends ModelContextFailure {
         statusCode: exception.statusCode,
       );
 }
+
+/// **Base class for all model context failures.**
+///
+/// This allows us to have specific failure types.
+abstract class RememberFailure extends Failure {
+  RememberFailure({
+    required super.message,
+    required super.statusCode,
+  });
+}
+
+class ConversationLogFailure extends RememberFailure {
+  ConversationLogFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  /// Converts a [ConversationLogException] into a [ConversationLogFailure].
+  ConversationLogFailure.fromException(ConversationLogException exception)
+    : this(
+        message: exception.message,
+        statusCode: exception.statusCode,
+      );
+}

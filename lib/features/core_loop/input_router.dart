@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:griot_proj/core/errors/failures.dart';
 import 'package:griot_proj/core/utils/type_defs.dart';
+import 'package:griot_proj/features/model_context/domain/entities/griot_interaction.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/build_prompt.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/get_recent_context_memory.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/select_role.dart';
 import 'package:griot_proj/features/reflect/domain/use_cases/get_gpt_response.dart';
 import 'package:griot_proj/features/understand/domain/entities/analyzed_result.dart';
@@ -11,11 +13,13 @@ class InputRouter {
     required this.selectRole,
     required this.buildPrompt,
     required this.getGPTResponse,
+    required this.getRecentContextMemory,
   });
 
   final SelectRole selectRole;
   final BuildPrompt buildPrompt;
   final GetGPTResponse getGPTResponse;
+  final GetRecentContextMemory getRecentContextMemory;
 
   ResultFuture<String> route(AnalyzedResult input) async {
     // 1. Get Role
@@ -39,9 +43,15 @@ class InputRouter {
 
     final role = roleResult.getOrElse(() => '');
 
+    final recentEither = await getRecentContextMemory(3);
+    final recent = recentEither.fold(
+      (_) => <GriotInteraction>[],
+      (r) => r,
+    );
+
     // 2. Build Prompt
     final promptResult = await buildPrompt(
-      BuildPromptParams(input: input.input, role: role),
+      BuildPromptParams(input: input.input, role: role, recent: recent),
     );
 
     if (promptResult.isLeft()) {

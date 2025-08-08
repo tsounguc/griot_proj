@@ -18,15 +18,6 @@ class GriotInteractionModel extends GriotInteraction {
          griotResponse: griotResponse,
        );
 
-  @HiveField(0)
-  final DateTime timestamp;
-
-  @HiveField(1)
-  final String userInput;
-
-  @HiveField(2)
-  final String griotResponse;
-
   GriotInteractionModel.empty()
     : this(
         timestamp: DateTime.now(),
@@ -44,6 +35,15 @@ class GriotInteractionModel extends GriotInteraction {
         userInput: dataMap['userInput'] as String,
         griotResponse: dataMap['griotResponse'] as String,
       );
+
+  @HiveField(0)
+  final DateTime timestamp;
+
+  @HiveField(1)
+  final String userInput;
+
+  @HiveField(2)
+  final String griotResponse;
 
   String toJson() => jsonEncode(toMap());
 
