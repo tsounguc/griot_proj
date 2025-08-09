@@ -3,6 +3,7 @@ part of 'service_locator.dart';
 final GetIt serviceLocator = GetIt.instance;
 
 Future<void> setUpServices() async {
+  await _initRemember();
   await _initReflect();
   await _initVoiceResponder();
   await _initInputRouter();
@@ -23,6 +24,7 @@ Future<void> _initUserInput() async {
         analyzeInput: serviceLocator(),
         inputRouter: serviceLocator(),
         saveContextMemory: serviceLocator(),
+        logConverstaionEntry: serviceLocator(),
       ),
     )
     // Use cases
@@ -136,6 +138,22 @@ Future<void> _initReflect() async {
     )
     // Data Source
     ..registerLazySingleton<ReflectRemoteDataSource>(ReflectRemoteDataSourceImpl.new)
+  // External dependencies
+  ;
+}
+
+Future<void> _initRemember() async {
+  serviceLocator
+    // App Logic
+    // Use cases
+    ..registerLazySingleton(() => GetConversationHistory(serviceLocator()))
+    ..registerLazySingleton(() => LogConversationEntry(serviceLocator()))
+    // Repositories
+    ..registerLazySingleton<ConversationHistoryRepository>(
+      () => ConversationHistoryRepositoryImpl(serviceLocator()),
+    )
+    // Data Source
+    ..registerLazySingleton<ConversationHistoryLocalDataSource>(ConversationHistoryLocalDataSourceImpl.new)
   // External dependencies
   ;
 }

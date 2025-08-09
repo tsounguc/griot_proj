@@ -15,6 +15,11 @@ import 'package:griot_proj/features/reflect/data/data_sources/reflect_remote_dat
 import 'package:griot_proj/features/reflect/data/repositories/reflect_repository_impl.dart';
 import 'package:griot_proj/features/reflect/domain/repositories/reflect_repository.dart';
 import 'package:griot_proj/features/reflect/domain/use_cases/get_gpt_response.dart';
+import 'package:griot_proj/features/remember/data/data_sources/conversation_history_local_data_source.dart';
+import 'package:griot_proj/features/remember/data/repositories/conversation_history_repository_impl.dart';
+import 'package:griot_proj/features/remember/domain/repositories/conversation_history_repository.dart';
+import 'package:griot_proj/features/remember/domain/use_cases/get_conversation_history.dart';
+import 'package:griot_proj/features/remember/domain/use_cases/log_conversation_entry.dart';
 import 'package:griot_proj/features/understand/data/data_sources/understand_remote_data_source.dart';
 import 'package:griot_proj/features/understand/data/repositories/understand_repository_impl.dart';
 import 'package:griot_proj/features/understand/domain/repositories/understand_repository.dart';

@@ -51,7 +51,11 @@ class InputRouter {
 
     // 2. Build Prompt
     final promptResult = await buildPrompt(
-      BuildPromptParams(input: input.input, role: role, recent: recent),
+      BuildPromptParams(
+        input: input.input,
+        role: role,
+        recent: recent,
+      ),
     );
 
     if (promptResult.isLeft()) {
