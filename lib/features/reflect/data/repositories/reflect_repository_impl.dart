@@ -4,6 +4,7 @@ import 'package:griot_proj/core/errors/exceptions.dart';
 import 'package:griot_proj/core/errors/failures.dart';
 import 'package:griot_proj/core/utils/type_defs.dart';
 import 'package:griot_proj/features/reflect/data/data_sources/reflect_remote_data_source.dart';
+import 'package:griot_proj/features/reflect/domain/entities/reflect_answer.dart';
 import 'package:griot_proj/features/reflect/domain/repositories/reflect_repository.dart';
 
 class ReflectRepositoryImpl implements ReflectRepository {
@@ -12,7 +13,7 @@ class ReflectRepositoryImpl implements ReflectRepository {
   final ReflectRemoteDataSource remoteDataSource;
 
   @override
-  ResultFuture<String> getResponse(String prompt) async {
+  ResultFuture<ReflectAnswer> getResponse(String prompt) async {
     try {
       final result = await remoteDataSource.getResponse(prompt);
 

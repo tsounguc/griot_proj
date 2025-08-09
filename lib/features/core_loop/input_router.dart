@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
 import 'package:griot_proj/core/errors/failures.dart';
 import 'package:griot_proj/core/utils/type_defs.dart';
+import 'package:griot_proj/features/core_loop/domain/entities/routed_response.dart';
 import 'package:griot_proj/features/model_context/domain/entities/griot_interaction.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/build_prompt.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/get_recent_context_memory.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/select_role.dart';
+import 'package:griot_proj/features/reflect/domain/entities/reflect_answer.dart';
 import 'package:griot_proj/features/reflect/domain/use_cases/get_gpt_response.dart';
 import 'package:griot_proj/features/understand/domain/entities/analyzed_result.dart';
 
@@ -21,7 +23,7 @@ class InputRouter {
   final GetGPTResponse getGPTResponse;
   final GetRecentContextMemory getRecentContextMemory;
 
-  ResultFuture<String> route(AnalyzedResult input) async {
+  ResultFuture<RoutedResponse> route(AnalyzedResult input) async {
     // 1. Get Role
     final roleResult = await selectRole(
       SelectRoleParams(
@@ -43,13 +45,14 @@ class InputRouter {
 
     final role = roleResult.getOrElse(() => '');
 
+    // 2. Recent memory
     final recentEither = await getRecentContextMemory(3);
     final recent = recentEither.fold(
       (_) => <GriotInteraction>[],
       (r) => r,
     );
 
-    // 2. Build Prompt
+    // 3. Build Prompt
     final promptResult = await buildPrompt(
       BuildPromptParams(
         input: input.input,
@@ -71,7 +74,7 @@ class InputRouter {
 
     final prompt = promptResult.getOrElse(() => '');
 
-    // 3. Get GPT Response
+    // 4. Get GPT Response
     final responseResult = await getGPTResponse(prompt);
 
     if (responseResult.isLeft()) {
@@ -85,6 +88,15 @@ class InputRouter {
       );
     }
 
-    return responseResult;
+    final answer = responseResult.getOrElse(
+      () => const ReflectAnswer(
+        text: '',
+        meta: {},
+      ),
+    );
+
+    return Right(
+      RoutedResponse(text: answer.text, role: role, meta: answer.meta),
+    );
   }
 }

@@ -80,12 +80,12 @@ class WakeWordCubit extends Cubit<UserInputState> {
   Future<void> getResponse(AnalyzedResult analyzedResult) async {
     final result = await _inputRouter.route(analyzedResult);
     result.fold((failure) => emit(UserInputError(failure.message)), (response) async {
-      emit(GRIOTResponseReceived(response));
+      emit(GRIOTResponseReceived(response.text));
       await _saveContextMemory(
         GriotInteraction(
           timestamp: DateTime.now(),
           userInput: analyzedResult.input,
-          griotResponse: response,
+          griotResponse: response.text,
         ),
       );
       await _logConversationEntry(
@@ -93,11 +93,11 @@ class WakeWordCubit extends Cubit<UserInputState> {
           id: UniqueKey().toString(),
           timestamp: DateTime.now(),
           userInput: analyzedResult.input,
-          griotResponse: response,
+          griotResponse: response.text,
           intent: analyzedResult.intent,
           emotion: analyzedResult.emotion,
-          role: '',
-          meta: const {},
+          role: response.role,
+          meta: response.meta,
         ),
       );
     });
