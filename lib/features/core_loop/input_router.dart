@@ -4,6 +4,7 @@ import 'package:griot_proj/core/utils/type_defs.dart';
 import 'package:griot_proj/features/core_loop/domain/entities/routed_response.dart';
 import 'package:griot_proj/features/model_context/domain/entities/griot_interaction.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/build_prompt.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/get_current_language.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/get_recent_context_memory.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/select_role.dart';
 import 'package:griot_proj/features/reflect/domain/entities/reflect_answer.dart';
@@ -16,12 +17,14 @@ class InputRouter {
     required this.buildPrompt,
     required this.getGPTResponse,
     required this.getRecentContextMemory,
+    required this.getCurrentLanguage,
   });
 
   final SelectRole selectRole;
   final BuildPrompt buildPrompt;
   final GetGPTResponse getGPTResponse;
   final GetRecentContextMemory getRecentContextMemory;
+  final GetCurrentLanguage getCurrentLanguage;
 
   ResultFuture<RoutedResponse> route(AnalyzedResult input) async {
     // 1. Get Role
@@ -52,12 +55,16 @@ class InputRouter {
       (r) => r,
     );
 
-    // 3. Build Prompt
+    // 3. Language
+    final langCode = (await getCurrentLanguage()).getOrElse(() => 'en');
+
+    // 4. Build Prompt
     final promptResult = await buildPrompt(
       BuildPromptParams(
         input: input.input,
         role: role,
         recent: recent,
+        languageCode: langCode!,
       ),
     );
 
@@ -74,7 +81,7 @@ class InputRouter {
 
     final prompt = promptResult.getOrElse(() => '');
 
-    // 4. Get GPT Response
+    // 5. Get GPT Response
     final responseResult = await getGPTResponse(prompt);
 
     if (responseResult.isLeft()) {
@@ -96,7 +103,11 @@ class InputRouter {
     );
 
     return Right(
-      RoutedResponse(text: answer.text, role: role, meta: answer.meta),
+      RoutedResponse(
+        text: answer.text,
+        role: role,
+        meta: answer.meta,
+      ),
     );
   }
 }

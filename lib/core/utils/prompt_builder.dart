@@ -5,12 +5,14 @@ class PromptBuilder {
   static String buildPrompt({
     required String input,
     required String role,
+    required String languageCode,
     List<GriotInteraction> recent = const [],
   }) {
     final history = _formatHistory(recent);
 
     return '''
     Role: $role
+    Reply in the user's language: $languageCode
     Style: clear, practical, under 2-3 sentences. avoid poetic/overly emotional language.
     ${history.isEmpty ? '' : 'Recent context (most recent first): \n$history\n'}
     User said: "$input"

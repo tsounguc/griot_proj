@@ -25,6 +25,8 @@ Future<void> _initUserInput() async {
         inputRouter: serviceLocator(),
         saveContextMemory: serviceLocator(),
         logConversationEntry: serviceLocator(),
+        detectLanguage: serviceLocator(),
+        setCurrentLanguage: serviceLocator(),
       ),
     )
     // Use cases
@@ -105,6 +107,7 @@ Future<void> _initInputRouter() async {
         buildPrompt: serviceLocator(),
         getGPTResponse: serviceLocator(),
         getRecentContextMemory: serviceLocator(),
+        getCurrentLanguage: serviceLocator(),
       ),
     )
   // Repositories

@@ -12,9 +12,15 @@ class VoiceResponderRepositoryImpl implements VoiceResponderRepository {
   final VoiceResponder voiceResponder;
 
   @override
-  ResultVoid speak(String message) async {
+  ResultVoid speak({
+    required String message,
+    required String currentLanguage,
+  }) async {
     try {
-      final result = await voiceResponder.speak(message);
+      final result = await voiceResponder.speak(
+        message: message,
+        currentLanguage: currentLanguage,
+      );
       return Right(result);
     } on SpeakResponseException catch (e, s) {
       debugPrintStack(label: e.message, stackTrace: s);

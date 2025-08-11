@@ -4,7 +4,10 @@ import 'package:flutter_tts/flutter_tts.dart';
 import 'package:griot_proj/core/utils/type_defs.dart';
 
 abstract class VoiceResponder {
-  Future<void> speak(String message);
+  Future<void> speak({
+    required String message,
+    required String currentLanguage,
+  });
 }
 
 class VoiceResponderImpl implements VoiceResponder {
@@ -12,15 +15,15 @@ class VoiceResponderImpl implements VoiceResponder {
   final FlutterTts _tts;
 
   @override
-  Future<void> speak(String message) async {
+  Future<void> speak({required String message, required String currentLanguage}) async {
     final completer = Completer<void>();
 
-    final voices = await _tts.getVoices;
+    // final voices = await _tts.getVoices;
     // var voice = <String, dynamic>{};
-    for (final v in voices as List) {
-      print(v);
-      // voice = v as DataMap;
-    }
+    // for (final v in voices as List) {
+    //   print(v);
+    //   // voice = v as DataMap;
+    // }
 
     // await _tts.setVoice({
     //   'name': voice['name'] as String,

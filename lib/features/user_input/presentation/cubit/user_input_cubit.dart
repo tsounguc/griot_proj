@@ -3,11 +3,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:griot_proj/features/core_loop/input_router.dart';
 import 'package:griot_proj/features/model_context/domain/entities/griot_interaction.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/get_current_language.dart';
 import 'package:griot_proj/features/model_context/domain/use_cases/save_context_memory.dart';
+import 'package:griot_proj/features/model_context/domain/use_cases/set_current_language.dart';
 import 'package:griot_proj/features/remember/domain/entities/conversation_log_entry.dart';
 import 'package:griot_proj/features/remember/domain/use_cases/log_conversation_entry.dart';
 import 'package:griot_proj/features/understand/domain/entities/analyzed_result.dart';
 import 'package:griot_proj/features/understand/domain/use_cases/analyze_input.dart';
+import 'package:griot_proj/features/understand/domain/use_cases/detect_language.dart';
 import 'package:griot_proj/features/user_input/domain/use_cases/listen_for_wake_word.dart';
 import 'package:griot_proj/features/user_input/domain/use_cases/listen_to_speech.dart';
 import 'package:griot_proj/features/voice_interface/domain/use_cases/speak_response.dart';
@@ -23,6 +26,9 @@ class WakeWordCubit extends Cubit<UserInputState> {
     required InputRouter inputRouter,
     required SaveContextMemory saveContextMemory,
     required LogConversationEntry logConversationEntry,
+    required DetectLanguage detectLanguage,
+    required SetCurrentLanguage setCurrentLanguage,
+    required GetCurrentLanguage getCurrentLanguage,
   }) : _listenForWakeWord = listenForWakeWord,
        _speakResponse = speakResponse,
        _listenToUserSpeech = listenToSpeech,
@@ -30,6 +36,9 @@ class WakeWordCubit extends Cubit<UserInputState> {
        _inputRouter = inputRouter,
        _saveContextMemory = saveContextMemory,
        _logConversationEntry = logConversationEntry,
+       _detectLanguage = detectLanguage,
+       _setCurrentLanguage = setCurrentLanguage,
+       _getCurrentLanguage = getCurrentLanguage,
        super(WakeWordInitial());
 
   final ListenForWakeWord _listenForWakeWord;
@@ -39,6 +48,9 @@ class WakeWordCubit extends Cubit<UserInputState> {
   final InputRouter _inputRouter;
   final SaveContextMemory _saveContextMemory;
   final LogConversationEntry _logConversationEntry;
+  final DetectLanguage _detectLanguage;
+  final SetCurrentLanguage _setCurrentLanguage;
+  final GetCurrentLanguage _getCurrentLanguage;
 
   Future<void> listenForWakeWord() async {
     emit(const WakeWordListening());
@@ -69,6 +81,11 @@ class WakeWordCubit extends Cubit<UserInputState> {
   }
 
   Future<void> analyzeVoiceInput(String input) async {
+    final langResult = await _detectLanguage(input);
+    await langResult.fold(
+      (_) async => _setCurrentLanguage('en'),
+      (detected) async => _setCurrentLanguage(detected.bcp47),
+    );
     final result = await _analyzeInput(input);
     result.fold(
       (failure) => emit(UserInputError(failure.message)),
@@ -105,7 +122,14 @@ class WakeWordCubit extends Cubit<UserInputState> {
   }
 
   Future<void> respondVocally(String text) async {
-    final result = await _speakResponse.call(text);
+    final currentLanguage = (await _getCurrentLanguage()).getOrElse(() => 'en');
+
+    final result = await _speakResponse(
+      SpeakResponseParams(
+        text: text,
+        currentLanguage: currentLanguage!,
+      ),
+    );
 
     result.fold(
       (failure) => emit(UserInputError(failure.message)),
@@ -115,7 +139,7 @@ class WakeWordCubit extends Cubit<UserInputState> {
 
   dynamic _onWakeWordHeard() async {
     emit(const WakeWordHeard());
-    final result = await _speakResponse.call('Yes?');
+    final result = await _speakResponse('Yes?');
 
     result.fold(
       (failure) => emit(UserInputError(failure.message)),

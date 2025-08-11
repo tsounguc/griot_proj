@@ -8,7 +8,12 @@ import 'package:griot_proj/features/model_context/domain/entities/griot_interact
 class BuildPrompt extends UseCaseWithParams<String, BuildPromptParams> {
   @override
   ResultFuture<String> call(BuildPromptParams params) async {
-    final result = PromptBuilder.buildPrompt(input: params.input, role: params.role, recent: params.recent);
+    final result = PromptBuilder.buildPrompt(
+      input: params.input,
+      role: params.role,
+      recent: params.recent,
+      languageCode: params.languageCode,
+    );
 
     return Right(result);
   }
@@ -19,11 +24,18 @@ class BuildPromptParams extends Equatable {
     required this.input,
     required this.role,
     required this.recent,
+    required this.languageCode,
   });
 
   final String input;
   final String role;
   final List<GriotInteraction> recent;
+  final String languageCode;
   @override
-  List<Object?> get props => [input, role];
+  List<Object?> get props => [
+    input,
+    role,
+    recent,
+    languageCode,
+  ];
 }
