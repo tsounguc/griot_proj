@@ -27,18 +27,22 @@ class HomeScreen extends StatelessWidget {
         ),
         child: Center(
           child: BlocConsumer<WakeWordCubit, UserInputState>(
-            listener: (context, state) {
+            listener: (context, state) async {
+              final cubit = context.read<WakeWordCubit>();
               if (state is WaitingForUserInput) {
-                context.read<WakeWordCubit>().listenToUserSpeech();
+                await cubit.listenToUserSpeech();
               }
               if (state is UserVoiceInputCaptured) {
-                context.read<WakeWordCubit>().analyzeVoiceInput(state.text);
+                await cubit.analyzeVoiceInput(state.text);
               }
               if (state is UserVoiceInputAnalyzed) {
-                context.read<WakeWordCubit>().getResponse(state.result);
+                await cubit.getResponse(state.result);
               }
               if (state is GRIOTResponseReceived) {
-                context.read<WakeWordCubit>().respondVocally(state.text);
+                await cubit.respondVocally(state.text);
+                if (state.text.contains('?')) {
+                  await cubit.listenToUserSpeech();
+                }
               }
             },
             builder: (context, state) {

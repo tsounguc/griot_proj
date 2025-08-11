@@ -22,14 +22,14 @@ class WakeWordCubit extends Cubit<UserInputState> {
     required AnalyzeInput analyzeInput,
     required InputRouter inputRouter,
     required SaveContextMemory saveContextMemory,
-    required LogConversationEntry logConverstaionEntry,
+    required LogConversationEntry logConversationEntry,
   }) : _listenForWakeWord = listenForWakeWord,
        _speakResponse = speakResponse,
        _listenToUserSpeech = listenToSpeech,
        _analyzeInput = analyzeInput,
        _inputRouter = inputRouter,
        _saveContextMemory = saveContextMemory,
-       _logConversationEntry = logConverstaionEntry,
+       _logConversationEntry = logConversationEntry,
        super(WakeWordInitial());
 
   final ListenForWakeWord _listenForWakeWord;
@@ -54,6 +54,7 @@ class WakeWordCubit extends Cubit<UserInputState> {
   }
 
   Future<void> listenToUserSpeech() async {
+    emit(const WaitingForUserInput());
     final result = await _listenToUserSpeech();
     result.fold(
       (failure) => emit(UserInputError(failure.message)),
@@ -114,7 +115,7 @@ class WakeWordCubit extends Cubit<UserInputState> {
 
   dynamic _onWakeWordHeard() async {
     emit(const WakeWordHeard());
-    final result = await _speakResponse.call('Yes? How can I help you?');
+    final result = await _speakResponse.call('Yes?');
 
     result.fold(
       (failure) => emit(UserInputError(failure.message)),

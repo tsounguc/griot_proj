@@ -24,7 +24,7 @@ Future<void> _initUserInput() async {
         analyzeInput: serviceLocator(),
         inputRouter: serviceLocator(),
         saveContextMemory: serviceLocator(),
-        logConverstaionEntry: serviceLocator(),
+        logConversationEntry: serviceLocator(),
       ),
     )
     // Use cases
@@ -43,8 +43,9 @@ Future<void> _initUserInput() async {
     // External dependencies
     ..registerLazySingleton(
       () => FlutterTts()
-        ..setLanguage('en-US')
+        ..setLanguage('en-ZA')
         ..setPitch(1)
+        ..setVoice({'name': 'en-ZA-Wavenet-A', 'locale': 'en-ZA'})
         ..setSpeechRate(0.45),
     )
     ..registerLazySingleton(SpeechToText.new)

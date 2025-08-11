@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:griot_proj/core/utils/type_defs.dart';
 
 abstract class VoiceResponder {
   Future<void> speak(String message);
@@ -13,6 +14,18 @@ class VoiceResponderImpl implements VoiceResponder {
   @override
   Future<void> speak(String message) async {
     final completer = Completer<void>();
+
+    final voices = await _tts.getVoices;
+    // var voice = <String, dynamic>{};
+    for (final v in voices as List) {
+      print(v);
+      // voice = v as DataMap;
+    }
+
+    // await _tts.setVoice({
+    //   'name': voice['name'] as String,
+    //   'locale': voice['locale'] as String,
+    // });
 
     _tts.setCompletionHandler(() {
       if (!completer.isCompleted) {
