@@ -9,10 +9,28 @@ class DetectedLanguageModel extends DetectedLanguage {
     required super.confidence,
   });
 
-  const DetectedLanguageModel.empty(): this(bcp47: '', confidence: 0);
+  // const DetectedLanguageModel.empty()
+  //  : this(
+  //      bcp47: '',
+  //      confidence: 0,
+  //    );
 
-  factory DetectedLanguageModel.fromJson(String source) => DetectedLanguageModel.fromMap(jsonDecode(source) as DataMap,);
-
-  DetectedLanguageModel.fromMap(DataMap dataMap): this(bcp47: dataMap['bcp47'] as String, confidence: dataMap['confidence'] as double)
-
+  // factory DetectedLanguageModel.fromJson(
+  //   String source,
+  // ) => DetectedLanguageModel.fromMap(
+  //   jsonDecode(source) as DataMap,
+  // );
+  //
+  // DetectedLanguageModel.fromMap(DataMap dataMap)
+  //   : this(
+  //       bcp47: dataMap['bcp47'] as String,
+  //       confidence: dataMap['confidence'] as double,
+  //     );
+  //
+  // String toJson() => jsonEncode(toMap());
+  //
+  // DataMap toMap() => {
+  //   'bcp47': bcp47,
+  //   'confidence': confidence,
+  // };
 }

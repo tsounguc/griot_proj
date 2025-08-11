@@ -5,4 +5,8 @@ abstract class ContextMemoryRepository {
   ResultVoid saveInteraction(GriotInteraction interaction);
 
   ResultFuture<List<GriotInteraction>> getRecentInteractions(int limit);
+
+  ResultVoid setCurrentLanguage(String bcp47);
+
+  ResultFuture<String?> getCurrentLanguage();
 }

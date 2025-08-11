@@ -2,13 +2,24 @@ import 'package:griot_proj/core/errors/exceptions.dart';
 import 'package:griot_proj/features/model_context/data/models/griot_interaction_model.dart';
 import 'package:griot_proj/features/model_context/domain/entities/griot_interaction.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class ContextMemoryLocalDataSource {
   Future<void> saveInteraction(GriotInteraction interaction);
   Future<List<GriotInteractionModel>> getRecentInteractions();
+
+  Future<void> setCurrentLanguage(String bcp47);
+
+  Future<String?> getCurrentLanguage();
 }
 
 class ContextMemoryLocalDataSourceImpl implements ContextMemoryLocalDataSource {
+  ContextMemoryLocalDataSourceImpl(this.prefs);
+
+  final SharedPreferences prefs;
+
+  static const _kLangKey = 'current_language';
+
   static const String boxName = 'griot_interactions';
 
   @override
@@ -50,5 +61,15 @@ class ContextMemoryLocalDataSourceImpl implements ContextMemoryLocalDataSource {
         statusCode: '505',
       );
     }
+  }
+
+  @override
+  Future<String?> getCurrentLanguage() async {
+    return prefs.getString(_kLangKey);
+  }
+
+  @override
+  Future<void> setCurrentLanguage(String bcp47) async {
+    await prefs.setString(_kLangKey, bcp47);
   }
 }

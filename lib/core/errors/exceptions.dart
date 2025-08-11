@@ -74,6 +74,14 @@ class AnalyzeException extends UnderstandingException {
   });
 }
 
+/// **Exception thrown when analyzing user input.**
+class DetectedLanguageException extends UnderstandingException {
+  const DetectedLanguageException({
+    required super.message,
+    required super.statusCode,
+  });
+}
+
 /// **Base class for all reflect exceptions.**
 abstract class ReflectException extends Equatable implements Exception {
   const ReflectException({
@@ -133,6 +141,15 @@ class GriotInteractionException extends ModelContextException {
     required super.statusCode,
   });
 }
+
+/// **Exception thrown when setting and getting current language.**
+class CurrentLanguageException extends ModelContextException {
+  const CurrentLanguageException({
+    required super.message,
+    required super.statusCode,
+  });
+}
+
 
 /// **Base class for all remember exceptions.**
 abstract class RememberException extends Equatable implements Exception {

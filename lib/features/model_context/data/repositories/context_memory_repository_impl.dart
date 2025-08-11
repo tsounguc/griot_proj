@@ -31,4 +31,24 @@ class ContextMemoryRepositoryImpl implements ContextMemoryRepository {
       return Left(GriotInteractionFailure.fromException(e));
     }
   }
+
+  @override
+  ResultFuture<String?> getCurrentLanguage() async {
+    try {
+      final language = await localDataSource.getCurrentLanguage();
+      return Right(language);
+    } on CurrentLanguageException catch (e) {
+      return Left(CurrentLanguageFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultVoid setCurrentLanguage(String bcp47) async {
+    try {
+      final result = await localDataSource.setCurrentLanguage(bcp47);
+      return Right(result);
+    } on CurrentLanguageException catch (e) {
+      return Left(CurrentLanguageFailure.fromException(e));
+    }
+  }
 }

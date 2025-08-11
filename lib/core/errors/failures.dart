@@ -113,6 +113,20 @@ class AnalyzeFailure extends UnderstandFailure {
       );
 }
 
+class DetectedLanguageFailure extends UnderstandFailure {
+  DetectedLanguageFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  /// Converts a [DetectedLanguageException] into a [DetectedLanguageFailure].
+  DetectedLanguageFailure.fromException(DetectedLanguageException exception)
+      : this(
+    message: exception.message,
+    statusCode: exception.statusCode,
+  );
+}
+
 /// **Base class for all reflect failures.**
 ///
 /// This allows us to have specific failure types.
@@ -187,6 +201,21 @@ class GriotInteractionFailure extends ModelContextFailure {
         message: exception.message,
         statusCode: exception.statusCode,
       );
+}
+
+class CurrentLanguageFailure extends ModelContextFailure {
+  CurrentLanguageFailure({
+    required super.message,
+    required super.statusCode,
+  });
+
+  /// Converts a [CurrentLanguageException] into a [CurrentLanguageFailure].
+  CurrentLanguageFailure
+      .fromException(CurrentLanguageException exception)
+      : this(
+    message: exception.message,
+    statusCode: exception.statusCode,
+  );
 }
 
 /// **Base class for all model context failures.**

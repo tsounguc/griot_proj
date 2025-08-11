@@ -89,7 +89,7 @@ Future<void> _initModelContext() async {
       RoleSelectorImpl.new,
     )
     ..registerLazySingleton<ContextMemoryLocalDataSource>(
-      ContextMemoryLocalDataSourceImpl.new,
+      () => ContextMemoryLocalDataSourceImpl(serviceLocator()),
     )
   // External dependencies
   ;

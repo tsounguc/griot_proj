@@ -25,7 +25,9 @@ class GriotInteractionModel extends GriotInteraction {
         griotResponse: '',
       );
 
-  factory GriotInteractionModel.fromJson(String source) => GriotInteractionModel.fromMap(
+  factory GriotInteractionModel.fromJson(
+    String source,
+  ) => GriotInteractionModel.fromMap(
     jsonDecode(source) as DataMap,
   );
 
