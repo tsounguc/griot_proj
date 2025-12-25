@@ -5,6 +5,7 @@ import 'package:griot_proj/core/services/service_locator.dart';
 import 'package:griot_proj/features/model_context/data/models/griot_interaction_model.dart';
 import 'package:griot_proj/features/remember/data/models/conversation_log_entry_model.dart';
 import 'package:griot_proj/home_screen.dart';
+import 'package:griot_proj/input/voice_input/presentation/cubit/voice_input_cubit.dart';
 import 'package:griot_proj/input/wake_word/presentation/cubit/wake_word_cubit.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -29,6 +30,9 @@ class GriotApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => serviceLocator<WakeWordCubit>()..listenForWakeWord(),
+        ),
+        BlocProvider(
+          create: (_) => serviceLocator<VoiceInputCubit>(),
         ),
       ],
       child: MaterialApp(

@@ -90,7 +90,7 @@ class VoiceInputRemoteDataSourceImpl implements VoiceInputRemoteDataSource {
         stackTrace: s,
         label: e.toString(),
       );
-      throw SpeechException(
+      throw VoiceInputException(
         message: e.toString(),
         statusCode: '505',
       );
@@ -99,7 +99,7 @@ class VoiceInputRemoteDataSourceImpl implements VoiceInputRemoteDataSource {
         stackTrace: s,
         label: e.toString(),
       );
-      throw SpeechException(
+      throw VoiceInputException(
         message: e.toString(),
         statusCode: '505',
       );
@@ -108,13 +108,13 @@ class VoiceInputRemoteDataSourceImpl implements VoiceInputRemoteDataSource {
         stackTrace: s,
         label: e.message,
       );
-      throw SpeechException(
+      throw VoiceInputException(
         message: e.message ?? 'Error Occurred',
         statusCode: '505',
       );
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
-      throw SpeechException(
+      throw VoiceInputException(
         message: e.toString(),
         statusCode: '505',
       );

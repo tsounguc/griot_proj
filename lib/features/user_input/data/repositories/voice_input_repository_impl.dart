@@ -14,7 +14,9 @@ class VoiceInputRepositoryImpl implements VoiceInputRepository {
   @override
   ResultVoid listenForWakeWord(WakeWordCallback onWakeWordDetected) async {
     try {
-      final result = await remoteDataSource.listenForWakeWord(onWakeWordDetected);
+      final result = await remoteDataSource.listenForWakeWord(
+        onWakeWordDetected,
+      );
       return Right(result);
     } on WakeWordException catch (e, s) {
       debugPrintStack(label: e.message, stackTrace: s);
@@ -27,9 +29,9 @@ class VoiceInputRepositoryImpl implements VoiceInputRepository {
     try {
       final result = await remoteDataSource.listenToSpeech();
       return Right(result);
-    } on SpeechException catch (e, s) {
+    } on VoiceInputException catch (e, s) {
       debugPrintStack(label: e.message, stackTrace: s);
-      return Left(SpeechFailure.fromException(e));
+      return Left(VoiceInputFailure.fromException(e));
     }
   }
 }

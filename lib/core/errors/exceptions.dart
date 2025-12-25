@@ -23,8 +23,8 @@ class WakeWordException extends UserInputException {
 }
 
 /// **Exception thrown during user speech errors.**
-class SpeechException extends UserInputException {
-  const SpeechException({
+class VoiceInputException extends UserInputException {
+  const VoiceInputException({
     required super.message,
     required super.statusCode,
   });
@@ -149,7 +149,6 @@ class CurrentLanguageException extends ModelContextException {
     required super.statusCode,
   });
 }
-
 
 /// **Base class for all remember exceptions.**
 abstract class RememberException extends Equatable implements Exception {

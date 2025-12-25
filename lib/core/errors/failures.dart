@@ -17,7 +17,10 @@ abstract class Failure extends Equatable {
   /// - **statusCode**: Can be an integer (e.g., HTTP error codes) or
   /// a string (e.g., Firebase error codes).
   Failure({required this.message, required this.statusCode})
-    : assert(statusCode is String || statusCode is int, 'StatusCode cannot be a ${statusCode.runtimeType}');
+    : assert(
+        statusCode is String || statusCode is int,
+        'StatusCode cannot be a ${statusCode.runtimeType}',
+      );
 
   /// The error message (human-readable).
   final String message;
@@ -51,14 +54,14 @@ class WakeWordFailure extends UserInputFailure {
       );
 }
 
-class SpeechFailure extends UserInputFailure {
-  SpeechFailure({
+class VoiceInputFailure extends UserInputFailure {
+  VoiceInputFailure({
     required super.message,
     required super.statusCode,
   });
 
-  /// Converts a [SpeechException] into a [SpeechFailure].
-  SpeechFailure.fromException(SpeechException exception)
+  /// Converts a [VoiceInputException] into a [VoiceInputFailure].
+  VoiceInputFailure.fromException(VoiceInputException exception)
     : this(
         message: exception.message,
         statusCode: exception.statusCode,
@@ -121,10 +124,10 @@ class DetectedLanguageFailure extends UnderstandFailure {
 
   /// Converts a [DetectedLanguageException] into a [DetectedLanguageFailure].
   DetectedLanguageFailure.fromException(DetectedLanguageException exception)
-      : this(
-    message: exception.message,
-    statusCode: exception.statusCode,
-  );
+    : this(
+        message: exception.message,
+        statusCode: exception.statusCode,
+      );
 }
 
 /// **Base class for all reflect failures.**
@@ -210,12 +213,11 @@ class CurrentLanguageFailure extends ModelContextFailure {
   });
 
   /// Converts a [CurrentLanguageException] into a [CurrentLanguageFailure].
-  CurrentLanguageFailure
-      .fromException(CurrentLanguageException exception)
-      : this(
-    message: exception.message,
-    statusCode: exception.statusCode,
-  );
+  CurrentLanguageFailure.fromException(CurrentLanguageException exception)
+    : this(
+        message: exception.message,
+        statusCode: exception.statusCode,
+      );
 }
 
 /// **Base class for all model context failures.**

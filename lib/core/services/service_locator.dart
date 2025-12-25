@@ -1,4 +1,12 @@
 import 'package:get_it/get_it.dart';
+import 'package:griot_proj/input/voice_input/data/data_sources/voice_input_service_impl.dart';
+import 'package:griot_proj/input/voice_input/data/repository/voice_input_repository_impl.dart';
+import 'package:griot_proj/input/voice_input/domain/repositories/voice_input_repository.dart';
+import 'package:griot_proj/input/voice_input/domain/uses_cases/listen_to_voice_input.dart';
+import 'package:griot_proj/input/voice_input/domain/uses_cases/start_voice_input.dart';
+import 'package:griot_proj/input/voice_input/domain/uses_cases/stop_voice_input.dart';
+import 'package:griot_proj/input/voice_input/presentation/cubit/voice_input_cubit.dart';
+import 'package:griot_proj/input/voice_input/service/voice_input_service.dart';
 import 'package:griot_proj/input/wake_word/data/data_sources/wake_word_service_impl.dart';
 import 'package:griot_proj/input/wake_word/data/repository/wake_word_repository_impl.dart';
 import 'package:griot_proj/input/wake_word/domain/repositories/wake_word_repository.dart';
