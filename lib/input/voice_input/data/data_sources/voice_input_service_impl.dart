@@ -40,7 +40,7 @@ class VoiceInputServiceImpl implements VoiceInputService {
     if (_initialized) return;
 
     final modelPath = await ModelLoader().loadFromAssets(
-      'assets/vosk_models/en/vosk-model-small-en-us-0.15/',
+      'assets/vosk_models/en/vosk-model-small-en-us-0.15.zip',
     );
 
     _model = await voskFlutterPlugin.createModel(modelPath);

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:griot_proj/input/voice_input/domain/entities/transcribed_input.dart';
 
-abstract class VoiceInputState extends Equatable {
+sealed class VoiceInputState extends Equatable {
   const VoiceInputState();
 
   @override
@@ -15,18 +15,18 @@ class VoiceInputListening extends VoiceInputState {}
 class VoiceInputStopped extends VoiceInputState {}
 
 class VoiceInputTranscribed extends VoiceInputState {
-  final TranscribedInput transcribedInput;
-
   const VoiceInputTranscribed(this.transcribedInput);
+
+  final TranscribedInput transcribedInput;
 
   @override
   List<Object?> get props => [transcribedInput];
 }
 
 class VoiceInputError extends VoiceInputState {
-  final String message;
-
   const VoiceInputError(this.message);
+
+  final String message;
 
   @override
   List<Object?> get props => [message];

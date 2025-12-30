@@ -97,7 +97,9 @@ class WakeWordCubit extends Cubit<UserInputState> {
 
   Future<void> getResponse(AnalyzedResult analyzedResult) async {
     final result = await _inputRouter.route(analyzedResult);
-    result.fold((failure) => emit(UserInputError(failure.message)), (response) async {
+    result.fold((failure) => emit(UserInputError(failure.message)), (
+      response,
+    ) async {
       emit(GRIOTResponseReceived(response.text));
       await _saveContextMemory(
         GriotInteraction(
@@ -138,14 +140,14 @@ class WakeWordCubit extends Cubit<UserInputState> {
   }
 
   dynamic _onWakeWordHeard() async {
-    emit(const WakeWordHeard());
-    final result = await _speakResponse('Yes?');
-
-    result.fold(
-      (failure) => emit(UserInputError(failure.message)),
-      (_) {
-        emit(const WaitingForUserInput());
-      },
-    );
+    // emit(const WakeWordHeard());
+    // final result = await _speakResponse('Yes?');
+    //
+    // result.fold(
+    //   (failure) => emit(UserInputError(failure.message)),
+    //   (_) {
+    //     emit(const WaitingForUserInput());
+    //   },
+    // );
   }
 }
